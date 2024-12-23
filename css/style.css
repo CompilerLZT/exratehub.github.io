@@ -566,7 +566,7 @@ body {
   padding: 36px 46px;
   position: relative;
   background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(915.200012207px);
+  backdrop-filter: blur(10px);
   border-radius: 20px 0 0 20px;
   display: flex;
   width: 100%;
@@ -873,10 +873,8 @@ body {
   border-radius: 20px 0 20px 20px;
   padding: 45px;
   display: none;
-  background: linear-gradient(0deg, rgba(255, 255, 255, 0.02), rgba(53, 255, 174, 0.04));
+  background: rgb(20, 21, 20);
   border: 2px solid #35ffae;
-  backdrop-filter: blur(915.2px);
-  -webkit-backdrop-filter: blur(915.2px); /* Для поддержки в Safari */
 }
 .setting__currency-block.active .token {
   display: block;
@@ -1089,7 +1087,6 @@ body {
 }
 .exchangers__body {
   background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(915.200012207px);
   padding: 33px;
   border-radius: 33px;
   display: flex;
@@ -1287,7 +1284,6 @@ body {
 }
 .partners__baner {
   background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(915.200012207px);
   padding: 33px;
   border-radius: 33px;
   display: flex;
@@ -1338,7 +1334,6 @@ body {
   flex-direction: column;
   gap: 40px;
   background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(915.200012207px);
   padding: 33px;
   border-radius: 33px;
   font-weight: 500;
@@ -1510,7 +1505,6 @@ body {
 }
 .contacts__form-item {
   background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(915.200012207px);
   padding: 32px 40px;
   width: 100%;
   display: flex;
