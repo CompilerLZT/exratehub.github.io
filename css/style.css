@@ -17,22 +17,22 @@
   font-family: Gilroy;
   font-display: swap;
   src: url("../fonts/Gilroy-ExtraBoldItalic.woff2") format("woff2"), url("../fonts/Gilroy-ExtraBoldItalic.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
+  font-weight: 800;
+  font-style: italic;
 }
 @font-face {
   font-family: Gilroy;
   font-display: swap;
   src: url("../fonts/Gilroy-Heavy.woff2") format("woff2"), url("../fonts/Gilroy-Heavy.woff") format("woff");
-  font-weight: 800;
+  font-weight: 900;
   font-style: normal;
 }
 @font-face {
   font-family: Gilroy;
   font-display: swap;
   src: url("../fonts/Gilroy-HeavyItalic.woff2") format("woff2"), url("../fonts/Gilroy-HeavyItalic.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
+  font-weight: 900;
+  font-style: italic;
 }
 @font-face {
   font-family: Gilroy;
@@ -45,8 +45,8 @@
   font-family: Gilroy;
   font-display: swap;
   src: url("../fonts/Gilroy-LightItalic.woff2") format("woff2"), url("../fonts/Gilroy-LightItalic.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
+  font-weight: 300;
+  font-style: italic;
 }
 @font-face {
   font-family: Gilroy;
@@ -59,8 +59,8 @@
   font-family: Gilroy;
   font-display: swap;
   src: url("../fonts/Gilroy-MediumItalic.woff2") format("woff2"), url("../fonts/Gilroy-MediumItalic.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
+  font-weight: 500;
+  font-style: italic;
 }
 @font-face {
   font-family: Gilroy;
@@ -74,7 +74,7 @@
   font-display: swap;
   src: url("../fonts/Gilroy-RegularItalic.woff2") format("woff2"), url("../fonts/Gilroy-RegularItalic.woff") format("woff");
   font-weight: 400;
-  font-style: normal;
+  font-style: italic;
 }
 @font-face {
   font-family: Gilroy;
@@ -87,8 +87,8 @@
   font-family: Gilroy;
   font-display: swap;
   src: url("../fonts/Gilroy-SemiBoldItalic.woff2") format("woff2"), url("../fonts/Gilroy-SemiBoldItalic.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
+  font-weight: 600;
+  font-style: italic;
 }
 @font-face {
   font-family: Gilroy;
@@ -101,22 +101,22 @@
   font-family: Gilroy;
   font-display: swap;
   src: url("../fonts/Gilroy-ThinItalic.woff2") format("woff2"), url("../fonts/Gilroy-ThinItalic.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
+  font-weight: 100;
+  font-style: italic;
 }
 @font-face {
   font-family: Gilroy;
   font-display: swap;
   src: url("../fonts/Gilroy-UltraLight.woff2") format("woff2"), url("../fonts/Gilroy-UltraLight.woff") format("woff");
-  font-weight: 400;
+  font-weight: 200;
   font-style: normal;
 }
 @font-face {
   font-family: Gilroy;
   font-display: swap;
   src: url("../fonts/Gilroy-UltraLightItalic.woff2") format("woff2"), url("../fonts/Gilroy-UltraLightItalic.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
+  font-weight: 200;
+  font-style: italic;
 }
 @font-face {
   font-family: Gilroy;
@@ -128,16 +128,16 @@
 @font-face {
   font-family: Gilroy;
   font-display: swap;
-  src: url("../fonts/Gilroy-BlackItalic.woff2") format("woff2"), url("../fonts/Gilroy-BlackItalic.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
+  src: url("../fonts/Gilroy-BoldItalic.woff2") format("woff2"), url("../fonts/Gilroy-BoldItalic.woff") format("woff");
+  font-weight: 700;
+  font-style: italic;
 }
 @font-face {
   font-family: Gilroy;
   font-display: swap;
-  src: url("../fonts/Gilroy-BoldItalic.woff2") format("woff2"), url("../fonts/Gilroy-BoldItalic.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
+  src: url("../fonts/Gilroy-BlackItalic.woff2") format("woff2"), url("../fonts/Gilroy-BlackItalic.woff") format("woff");
+  font-weight: 900;
+  font-style: italic;
 }
 * {
   padding: 0px;
@@ -246,7 +246,7 @@ body {
   margin: 0 auto;
   padding: 0 2.8125rem;
 }
-@media (max-width: 37.5em) {
+@media (max-width: 40.625em) {
   [class*=__container] {
     padding: 0 15px;
   }
@@ -316,21 +316,6 @@ body {
   padding: 26px 0;
   background: url(../img/header.png);
   background-size: cover;
-}
-@media (min-width: 81.625em) {
-  .header {
-    margin-bottom: 3.4375rem;
-  }
-}
-@media (min-width: 20em) and (max-width: 81.625em) {
-  .header {
-    margin-bottom: calc(1.5625rem + 1.875 * (((100vw - 20rem)) / ((61.625))));
-  }
-}
-@media (max-width: 20em) {
-  .header {
-    margin-bottom: 1.5625rem;
-  }
 }
 @media (max-width: 62.5em) {
   .header {
@@ -417,12 +402,19 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transition: all 0.4s ease 0s;
   position: relative;
+}
+.lang.active {
+  margin-bottom: -100px;
+}
+@media (max-width: 62.5em) {
+  .lang.active {
+    margin-bottom: 0;
+  }
 }
 .active.lang .lang__wrap {
   border-radius: 33px;
-  background: rgba(255, 255, 255, 0.02);
+  background: rgb(22, 37, 30);
   border: 1px solid #35ffae;
   padding: 40px;
 }
@@ -548,6 +540,7 @@ body {
   gap: 14px;
   flex: 1 1 auto;
   font-weight: 600;
+  opacity: 0.4;
   font-size: 27px;
   line-height: 89%;
 }
@@ -698,12 +691,10 @@ body {
 .setting__search-wrap .amount {
   font-weight: 600;
   font-size: 27px;
-  width: 100%;
   line-height: 89%;
   outline: none;
   padding: 22px 0;
   background: transparent;
-  flex: 1 1 auto;
   color: rgba(255, 255, 255, 0.18);
 }
 @media (max-width: 62.5em) {
@@ -720,12 +711,11 @@ body {
   }
 }
 .setting__search-count {
-  font-weight: 600;
   font-size: 25px;
   display: flex;
   align-items: center;
   justify-content: center;
-  line-height: 96%;
+  line-height: 1;
   flex: 1 1 auto;
   color: #fff;
 }
@@ -734,9 +724,9 @@ body {
   outline: none;
   width: 100%;
   display: block;
-  line-height: 96%;
+  padding-right: 5px;
+  line-height: 1;
   text-align: right;
-  flex-shrink: 0;
   color: #fff;
 }
 .setting__search-count input::placeholder {
@@ -804,12 +794,12 @@ body {
 
 @media (min-width: 81.625em) {
   section {
-    margin-bottom: 2.875rem;
+    margin-bottom: 5rem;
   }
 }
 @media (min-width: 20em) and (max-width: 81.625em) {
   section {
-    margin-bottom: calc(2.1875rem + 0.6875 * (((100vw - 20rem)) / ((61.625))));
+    margin-bottom: calc(2.1875rem + 2.8125 * (((100vw - 20rem)) / ((61.625))));
   }
 }
 @media (max-width: 20em) {
@@ -871,9 +861,10 @@ body {
   top: 0;
   border: 2px solid #35ffae;
   border-radius: 20px 0 20px 20px;
-  padding: 45px;
+  padding: 34px;
+  padding-top: 44px;
   display: none;
-  background: rgb(20, 21, 20);
+  background: rgb(22, 37, 30);
   border: 2px solid #35ffae;
 }
 .setting__currency-block.active .token {
@@ -1082,7 +1073,7 @@ body {
     flex-direction: row;
   }
 }
-.exchangers__tabs-title:first-child {
+.exchangers .acccccc {
   color: #fff;
 }
 .exchangers__body {
@@ -1265,6 +1256,14 @@ body {
   }
 }
 
+input {
+  color: #fff !important;
+}
+
+.active-border {
+  border: 1px solid #34ffae;
+}
+
 .partners__title {
   display: flex;
   gap: 20px;
@@ -1281,6 +1280,15 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
+  font-weight: 600;
+  font-size: 30px;
+  text-align: center;
+  color: #35ffae;
+}
+@media (max-width: 62.5em) {
+  .partners__numb {
+    font-size: 1.25rem;
+  }
 }
 .partners__baner {
   background: rgba(255, 255, 255, 0.02);
@@ -1297,6 +1305,9 @@ body {
     gap: 15px;
     border-radius: 20px;
   }
+  .partners__baner .btn {
+    font-size: 0.875rem;
+  }
 }
 @media (max-width: 43.75em) {
   .partners__baner {
@@ -1312,7 +1323,8 @@ body {
 }
 @media (max-width: 62.5em) {
   .partners__text {
-    font-size: 1.25rem;
+    font-size: 1rem;
+    max-width: 400px;
   }
 }
 @media (max-width: 37.5em) {
@@ -1339,8 +1351,6 @@ body {
   font-weight: 500;
   font-size: 22px;
   line-height: 102%;
-  text-decoration: underline;
-  text-decoration-skip-ink: none;
   color: #fff;
 }
 @media (max-width: 62.5em) {
@@ -1352,9 +1362,18 @@ body {
 }
 .partners__card-top {
   flex: 1;
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+}
+.partners__card-top img {
+  max-width: 100%;
+  width: 100%;
+}
+.partners__card-ava img {
+  max-width: 100%;
 }
 @media (max-width: 23.75em) {
   .partners__card-ava img {
@@ -1371,15 +1390,27 @@ body {
 .partners__card-value {
   margin-top: -10px;
 }
+@media (max-width: 43.75em) {
+  .partners__card-value {
+    font-size: 1.125rem;
+  }
+}
 .partners .link {
   padding: 16px 20px;
   color: #fff;
+  text-decoration: none !important;
   display: block;
   font-size: 1.25rem;
   width: 100%;
   border-radius: 15px;
   text-align: center;
+  text-decoration: none;
   transition: all 0.3s ease 0s;
+}
+@media (max-width: 75em) {
+  .partners .link {
+    font-size: 1rem;
+  }
 }
 .partners .link:hover {
   transform: scale(1.1);
@@ -1496,6 +1527,16 @@ body {
 }
 .contacts__form .token {
   border-radius: 20px;
+}
+@media (max-width: 62.5em) {
+  .contacts__form .token {
+    padding: 40px;
+  }
+}
+@media (max-width: 31.25em) {
+  .contacts__form .token {
+    padding: 30px;
+  }
 }
 .contacts__form .token .contacts__form-item {
   backdrop-filter: none;
@@ -1629,6 +1670,7 @@ body {
     gap: 20px;
     position: static;
     flex-direction: row;
+    justify-content: space-between;
   }
 }
 @media (max-width: 37.5em) {
@@ -1653,6 +1695,7 @@ body {
 .partners__iop {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 30px;
   max-width: 820px;
 }
