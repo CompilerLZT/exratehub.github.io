@@ -2111,3 +2111,6 @@ input {
     transform: rotate(360deg);
   }
 }
+marquee {
+    font-family: 'Math' !important;
+}
