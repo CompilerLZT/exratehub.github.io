@@ -405,11 +405,13 @@ body {
   position: relative;
 }
 .lang.active {
-  margin-bottom: -100px;
+  margin-bottom: -105px;
+  margin-left: -60px;
 }
 @media (max-width: 62.5em) {
   .lang.active {
     margin-bottom: 0;
+    margin-left: 0;
   }
 }
 .active.lang .lang__wrap {
@@ -482,7 +484,7 @@ body {
 
 .line-hero {
   font-weight: 600;
-  font-size: 27px;
+  font-size: 24px;
   line-height: 89%;
   text-align: center;
   color: #fff;
@@ -507,12 +509,12 @@ body {
 @media (max-width: 62.5em) {
   .line-hero {
     padding: 15px 0;
-    font-size: 1.0625rem;
+    font-size: 1rem;
   }
 }
 @media (max-width: 37.5em) {
   .line-hero {
-    font-size: 0.9375rem;
+    font-size: 0.875rem;
   }
 }
 
@@ -684,13 +686,15 @@ body {
   display: flex;
   width: 100%;
   gap: 10px;
-  padding: 0 28px;
+  overflow: hidden;
   border-radius: 15px;
-  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid transparent;
+  padding-right: 0;
 }
 .setting__search-wrap .amount {
   font-weight: 600;
   font-size: 27px;
+  cursor: pointer;
   line-height: 89%;
   outline: none;
   padding: 22px 0;
@@ -700,13 +704,12 @@ body {
 @media (max-width: 62.5em) {
   .setting__search-wrap .amount {
     font-size: 1.25rem;
-    padding: 13px 0;
   }
 }
 @media (max-width: 62.5em) {
   .setting__search-wrap {
     border-radius: 10px;
-    padding: 0 24px;
+    padding-right: 0;
     gap: 8px;
   }
 }
@@ -719,18 +722,37 @@ body {
   flex: 1 1 auto;
   color: #fff;
 }
+.setting__search-count .sear {
+  padding-left: 24px;
+  opacity: 0.7;
+  background: #333;
+  cursor: pointer;
+  border: 5px solid #333;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-right: 24px;
+}
 .setting__search-count input {
   background: transparent;
   outline: none;
+  padding-left: 28px;
+  background: rgba(255, 255, 255, 0.02);
   width: 100%;
   display: block;
+  height: 100%;
   padding-right: 5px;
   line-height: 1;
-  text-align: right;
   color: #fff;
 }
 .setting__search-count input::placeholder {
   color: #fff;
+}
+@media (max-width: 62.5em) {
+  .setting__search-count input {
+    padding: 10px 0;
+    padding-left: 24px;
+  }
 }
 @media (max-width: 62.5em) {
   .setting__search-count {
@@ -936,7 +958,11 @@ body {
   }
 }
 .token__top-right {
+  transition: all 2.9s ease 0s;
   flex-shrink: 0;
+}
+.active .token__top-right {
+  transform: rotate(180deg);
 }
 @media (max-width: 62.5em) {
   .token__top-right img {
@@ -952,10 +978,18 @@ body {
   background: rgba(255, 255, 255, 0.02);
   padding: 11px;
   border-radius: 105px;
+  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 18px;
   margin-right: 20px;
+  transition: all 0.3s ease 0s;
+}
+.token__line:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+.token__line:active {
+  transform: scale(0.9);
 }
 @media (max-width: 62.5em) {
   .token__line {
@@ -976,6 +1010,9 @@ body {
   line-height: 89%;
   color: #fff;
   margin-bottom: 4px;
+}
+.contacts .token__line-ttl {
+  margin-bottom: 0;
 }
 @media (max-width: 12.5em) {
   .token__line-ttl {
@@ -1028,6 +1065,9 @@ body {
   scrollbar-color: #35ffae transparent; /* Цвета ползунка и дорожки */
 }
 
+.exchangers__btn {
+  display: flex;
+}
 .exchangers__top {
   display: flex;
   margin-bottom: 35px;
@@ -1044,6 +1084,7 @@ body {
 .exchangers__title {
   display: flex;
   gap: 18px;
+  align-items: center;
   margin-bottom: 0;
 }
 @media (max-width: 62.5em) {
@@ -1054,6 +1095,7 @@ body {
 .exchangers__tabs-titles {
   display: flex;
   gap: 38px;
+  align-items: center;
   font-weight: 600;
   font-size: 30px;
   line-height: 102%;
@@ -1412,9 +1454,6 @@ input {
     font-size: 1rem;
   }
 }
-.partners .link:hover {
-  transform: scale(1.1);
-}
 @media (max-width: 62.5em) {
   .partners .link {
     font-size: 1rem;
@@ -1442,7 +1481,7 @@ input {
   padding: 60px 0;
   position: relative;
   background: url(../img/footer.png);
-  background-size: cover;
+  background-repeat: repeat;
 }
 @media (max-width: 62.5em) {
   .footer {
@@ -1481,8 +1520,18 @@ input {
 @media (max-width: 62.5em) {
   .footer__text {
     gap: 10px;
+    font-size: 1.25rem;
+  }
+  .footer__text svg {
+    max-width: 40px;
   }
 }
+@media (max-width: 62.5em) {
+  .footer .soc a img {
+    max-width: 25px;
+  }
+}
+
 .soc {
   display: flex;
   gap: 43px;
@@ -1619,6 +1668,9 @@ input {
     max-width: 35px;
   }
 }
+.active .contacts__form-imposter img {
+  transform: rotate(180deg);
+}
 .contacts__form-submit {
   position: absolute;
   right: 30px;
@@ -1709,6 +1761,93 @@ input {
   .kirone {
     flex-wrap: wrap;
   }
+}
+.tippy-box[data-animation=fade][data-state=hidden] {
+  opacity: 0;
+}
+
+[data-tippy-root] {
+  max-width: calc(100vw - 10px);
+}
+
+.tippy-box {
+  position: relative;
+  background-color: #333;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1.4;
+  outline: 0;
+  transition-property: transform, visibility, opacity;
+}
+
+.tippy-box[data-placement^=top] > .tippy-arrow {
+  bottom: 0;
+}
+
+.tippy-box[data-placement^=top] > .tippy-arrow:before {
+  bottom: -7px;
+  left: 0;
+  border-width: 8px 8px 0;
+  border-top-color: initial;
+  transform-origin: center top;
+}
+
+.tippy-box[data-placement^=bottom] > .tippy-arrow {
+  top: 0;
+}
+
+.tippy-box[data-placement^=bottom] > .tippy-arrow:before {
+  top: -7px;
+  left: 0;
+  border-width: 0 8px 8px;
+  border-bottom-color: initial;
+  transform-origin: center bottom;
+}
+
+.tippy-box[data-placement^=left] > .tippy-arrow {
+  right: 0;
+}
+
+.tippy-box[data-placement^=left] > .tippy-arrow:before {
+  border-width: 8px 0 8px 8px;
+  border-left-color: initial;
+  right: -7px;
+  transform-origin: center left;
+}
+
+.tippy-box[data-placement^=right] > .tippy-arrow {
+  left: 0;
+}
+
+.tippy-box[data-placement^=right] > .tippy-arrow:before {
+  left: -7px;
+  border-width: 8px 8px 8px 0;
+  border-right-color: initial;
+  transform-origin: center right;
+}
+
+.tippy-box[data-inertia][data-state=visible] {
+  transition-timing-function: cubic-bezier(0.54, 1.5, 0.38, 1.11);
+}
+
+.tippy-arrow {
+  width: 16px;
+  height: 16px;
+  color: #333;
+}
+
+.tippy-arrow:before {
+  content: "";
+  position: absolute;
+  border-color: transparent;
+  border-style: solid;
+}
+
+.tippy-content {
+  position: relative;
+  padding: 5px 9px;
+  z-index: 1;
 }
 .swiper {
   overflow: hidden;
