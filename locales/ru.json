@@ -37,7 +37,15 @@
     "chooseTopic": "Выберите тему",
     "email": "Ваша Почта",
     "message": "Сообщение",
-    "send": "Отправить"
+    "send": "Отправить",
+      "topics": {
+        "fundsNotReceived": "Токены не пришли",
+        "amountReceivedIncorrect": "Получил не ту сумму, которую хотел",
+        "incorrectMemo": "Сделал ошибку в параметрах обмена",
+        "wrongNetworkDeposit": "Технические проблема",
+        "becomePartner": "Стать партнером",
+        "other": "Другое"
+      }
   },
   "footer": {
     "copyright": "Авторские права © 2024",

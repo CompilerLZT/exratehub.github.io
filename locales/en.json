@@ -37,7 +37,15 @@
     "chooseTopic": "Select a topic",
     "email": "Your Email",
     "message": "Message",
-    "send": "Send"
+    "send": "Send",
+    "topics": {
+      "fundsNotReceived": "The tokens didn't arrive",
+      "amountReceivedIncorrect": "I received the wrong amount of tokens",
+      "incorrectMemo": "Made a mistake in the exchange parameters",
+      "wrongNetworkDeposit": "Technical problem",
+      "becomePartner": "Become a partner",
+      "other": "Other"
+    }
   },
   "footer": {
     "copyright": "Copyright © 2024",

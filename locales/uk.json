@@ -37,7 +37,16 @@
     "chooseTopic": "Виберіть тему",
     "email": "Електронна пошта",
     "message": "Повідомлення",
-    "send": "Посилати"
+    "send": "Посилати",
+    "topics": {
+      "fundsNotReceived": "Токени не надійшли",
+      "amountReceivedIncorrect": "Я отримав неправильну кількість токенів",
+      "incorrectMemo": "Зробив помилку в параметрах обміну",
+      "wrongNetworkDeposit": "Технічна проблема",
+      "becomePartner": "Стати партнером",
+      "other": "Інше"
+    }
+
   },
   "footer": {
     "copyright": "Авторські права © 2024",

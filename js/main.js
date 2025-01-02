@@ -13,6 +13,8 @@ $(document).ready(function() {
             loadLanguage(selectedLang);
             localStorage.setItem('lang', selectedLang); // Сохранение языка в localStorage
             updateLangText(selectedLang);  // Обновление текста текущего языка в дропдауне
+
+
         });
 
         // Функция для обновления класса "this" в меню
@@ -46,6 +48,7 @@ $(document).ready(function() {
             // Обновление тайтла
             $('title').text(data.main.title);
             $('[data-translate="main.title"]').text(data.main.title);
+            $('[data-translate="contact.title"]').text(data.contact.title);
 
 
             // Обновление данных для header
@@ -83,13 +86,22 @@ $(document).ready(function() {
             $('[data-translate="contact.message"]').attr('placeholder', data.contact.message);
 
 
+            $('[data-translate="contact.topics.fundsNotReceived"]').text(data.contact.topics.fundsNotReceived);
+            $('[data-translate="contact.topics.amountReceivedIncorrect"]').text(data.contact.topics.amountReceivedIncorrect);
+            $('[data-translate="contact.topics.incorrectMemo"]').text(data.contact.topics.incorrectMemo);
+            $('[data-translate="contact.topics.wrongNetworkDeposit"]').text(data.contact.topics.wrongNetworkDeposit);
+            $('[data-translate="contact.topics.becomePartner"]').text(data.contact.topics.becomePartner);
+            $('[data-translate="contact.topics.other"]').text(data.contact.topics.other);
+            $('[data-translate="contact.send"]').text(data.contact.send);
+
+
+
             // Обновление данных для footer
             $('[data-translate="footer.copyright"]').text(data.footer.copyright);
             $('[data-translate="footer.socialMedia.soc1"]').text(data.footer.socialMedia.soc1);
             $('[data-translate="footer.socialMedia.soc2"]').text(data.footer.socialMedia.soc2);
             $('[data-translate="footer.socialMedia.soc3"]').text(data.footer.socialMedia.soc3);
             $('[data-translate="footer.socialMedia.soc4"]').text(data.footer.socialMedia.soc4);
-
 
         });
     }
@@ -114,3 +126,5 @@ $(document).ready(function() {
         $('.lang__chois .index').text(langText);
     }
 });
+
+

@@ -6,33 +6,49 @@ const endpoints = [
     { name: 'exchangerAll', method: 'GET', url: 'exchanger/all' },
     { name: 'exchangerRates', method: 'GET', url: 'exchanger/rates' },
 ];
-
+const defaultExchangeRateParams =
+    {
+        fromCurrency: 'BTC',
+        fromNetwork: 'BTC',
+        toCurrency: 'XMR',
+        toNetwork: 'XMR',
+        amount: '0.1',
+        rateType: 'rate'
+    };
 // Хранилище данных обменников и управление состоянием загрузки
 let exchangersData = new Map(); // Используем Map для хранения данных с уникальными ключами
 let exchangers = [];
-let page = 0; // Страница для пагинации
-let isLoading = false; // Флаг загрузки данных
-let leftDropDownData = []; // Данные для левого дропдауна
-let rightDropDownData = []; // Данные для правого дропдауна
 
 /**
  * Функция для получения данных с API
  * @param {string} endpointName - Название эндпоинта
  * @param {Object} params - Параметры запроса
+ * @param method
  * @returns {Promise<Object>} - Возвращает промис с данными из API
  */
-async function fetchData(endpointName, params = {}) {
+async function fetchData(endpointName, params = {}, method = 'GET') {
     const endpoint = endpoints.find(e => e.name === endpointName);
     if (!endpoint) throw new Error(`Endpoint "${endpointName}" not found.`);
 
     const url = new URL(`${apiUrl}${endpoint.url}`);
-    url.search = new URLSearchParams(params);
+
+    const options = {
+        method: method,
+        headers: {
+            'Accept': '*/*',
+            'Content-Type': 'application/json' // Указываем, что отправляем JSON
+        },
+    };
+
+    // Если метод POST или PUT, добавляем тело запроса
+    if (method === 'POST' || method === 'PUT') {
+        options.body = JSON.stringify(params); // Преобразуем объект params в JSON
+    } else {
+        url.search = new URLSearchParams(params); // Для GET запроса добавляем параметры в URL
+    }
 
     try {
-        const response = await fetch(url, {
-            method: endpoint.method,
-            headers: { 'Accept': '*/*' }
-        });
+        const response = await fetch(url, options);
 
         if (!response.ok) throw new Error(`Error fetching data from "${endpointName}": ${response.status}`);
 
@@ -70,98 +86,216 @@ function updateSelected(exchanger, side) {
     }
 }
 
-/**
- * Универсальная функция для обновления дропдауна для любой стороны (левого или правого)
- * @param {Array} dropDownData - Данные для дропдауна (левый или правый)
- * @param {string} side - Сторона ('left' или 'right')
- * @param {string} defaultCurrency - Валюта по умолчанию для выбора
- */
-function updateDropdown(dropDownData, side, defaultCurrency) {
-    // Выбираем правильный контейнер для дропдауна в зависимости от стороны (левая или правая)
-    const dropdown = document.querySelector(`.token__block.${side === 'left' ? 'exchange' : 'receipt'}`);
 
 
-        dropdown.innerHTML = ''; // Очищаем дропдаун
-    dropDownData.forEach(exchanger => {
-        const key = `${exchanger.currency}-${exchanger.network}`;
-        if (!exchangersData.has(key)) exchangersData.set(key, exchanger); // Добавляем уникальный ключ
 
-        const dropdownItem = document.createElement('div');
-        dropdownItem.className = 'token__line';
 
-        // Если это первый вызов и валюта/сеть совпадают с defaultCurrency, добавляем класс active
-        if (exchanger.currency === defaultCurrency && exchanger.network === defaultCurrency ) {
-            dropdownItem.classList.add('active-border')
-            const amountCurrency = document.querySelector('.sear')
-            amountCurrency.innerHTML = 'BTC';
-            const amount = document.querySelector('#amount')
-            amount.value = 0.1
-            updateSelected(exchanger, side);
+
+
+
+
+
+
+
+let pageLeft = 0;
+let pageRight = 0;
+let isLoadingLeft = false;
+let isLoadingRight = false;
+let leftDropDownData = [];
+let rightDropDownData = [];
+let searchTimeouts = { left: null, right: null };
+let currentSearchTexts = { left: '', right: '' };
+const searchDebounceTimeout = 300;
+
+// Обработчик ввода текста в поле поиска с дебаунсом
+async function handleSearchInput(event, side) {
+    const searchValue = event.target.value.trim();
+
+    // Если строка поиска пустая, сбрасываем данные
+    if (searchValue.length < 3) {
+        const dropdown = document.querySelector(`.token__block.${side === 'left' ? 'exchange' : 'receipt'}`);
+        dropdown.innerHTML = ''; // Очищаем результаты поиска
+        side === 'left' ? leftDropDownData = [] : rightDropDownData = [];
+        return;
+    }
+
+    // Применяем debounce для уменьшения количества запросов
+    clearTimeout(searchTimeouts[side]);
+    searchTimeouts[side] = setTimeout(async () => {
+        // Если запрос уже был сделан, игнорируем новый
+        if (searchValue === currentSearchTexts[side]) return;
+
+        currentSearchTexts[side] = searchValue;
+
+        const dropdown = document.querySelector(`.token__block.${side === 'left' ? 'exchange' : 'receipt'}`);
+        dropdown.innerHTML = '<div class="loading">Loading...</div>'; // Показываем индикатор загрузки
+
+        // Сбрасываем массив данных перед загрузкой новых
+        side === 'left' ? leftDropDownData = [] : rightDropDownData = [];
+
+        // Сбрасываем номер страницы для нового запроса
+        if (side === 'left') pageLeft = 0;
+        else pageRight = 0;
+
+        try {
+            const params = { page: side === 'left' ? pageLeft : pageRight, pageSize: 20, search: searchValue };
+            const data = await fetchData('instrumentAll', params);
+            dropdown.innerHTML = ''; // Очищаем перед обновлением
+            if (data && data.content) {
+                updateDropdown(data.content, side, searchValue); // Обновляем dropdown
+            } else {
+                dropdown.innerHTML = '<div class="no-results">No results found</div>';
+            }
+        } catch (error) {
+            console.error('Ошибка при выполнении поиска:', error);
         }
+    }, searchDebounceTimeout);
+}
 
-        dropdownItem.dataset.token = exchanger.currency;
-        dropdownItem.dataset.network = exchanger.network;
-        dropdownItem.innerHTML = `
-            <div class="token__img">
-                <img src="${exchanger.imageUrl}" alt="${exchanger.currency}" />
-            </div>
-            <div class="token__line-bx">
-                <div class="token__line-ttl">${exchanger.currency}</div>
-                <div class="token__line-txt">${exchanger.network}</div>
-            </div>
-        `;
-        dropdown.appendChild(dropdownItem);
+// Загрузка данных для выпадающего списка
+async function loadDropdownData(side, defaultCurrency) {
+    // Проверяем, если идет загрузка данных
+    if ((side === 'left' && isLoadingLeft) || (side === 'right' && isLoadingRight)) {
+        return;
+    }
+
+    // Определяем параметры запроса
+    const params = {
+        page: side === 'left' ? pageLeft : pageRight,
+        pageSize: 20,
+        search: defaultCurrency || '', // Параметр поиска
+    };
+
+    console.log(`Запрос для ${side} на страницу ${side === 'left' ? pageLeft : pageRight}`);
+
+    // Устанавливаем флаг загрузки
+    if (side === 'left') isLoadingLeft = true;
+    else isLoadingRight = true;
+
+    try {
+        const data = await fetchData('instrumentAll', params);
+        console.log(`Ответ от сервера для ${side}:`, data);
+
+        if (data && data.content && data.content.length > 0) {
+            updateDropdown(data.content, side, defaultCurrency);
+
+            // Увеличиваем номер страницы
+            if (side === 'left') pageLeft++;
+            else pageRight++;
+
+        } else {
+            console.log(`Нет данных для ${side}`);
+        }
+    } catch (error) {
+        console.error(`Ошибка загрузки данных для ${side}:`, error);
+    } finally {
+        if (side === 'left') isLoadingLeft = false;
+        else isLoadingRight = false;
+    }
+}
+
+// Обновление выпадающего списка
+function updateDropdown(dropDownData, side, defaultCurrency) {
+    const dropdown = document.querySelector(`.token__block.${side === 'left' ? 'exchange' : 'receipt'}`);
+    const currentData = side === 'left' ? leftDropDownData : rightDropDownData;
+
+    dropDownData.forEach((exchanger) => {
+        const key = `${exchanger.currency}-${exchanger.network}`;
+        if (!currentData.some(item => `${item.currency}-${item.network}` === key)) {
+            currentData.push(exchanger);
+            const dropdownItem = document.createElement('div');
+            dropdownItem.className = 'token__line';
+            dropdownItem.dataset.token = exchanger.currency;
+            dropdownItem.dataset.network = exchanger.network;
+            dropdownItem.innerHTML = `
+                <div class="token__img">
+                    <img src="${exchanger.imageUrl}" alt="${exchanger.currency}" />
+                </div>
+                <div class="token__line-bx">
+                    <div class="token__line-ttl">${exchanger.currency}</div>
+                    <div class="token__line-txt">${exchanger.network}</div>
+                </div>
+            `;
+            if (exchanger.currency === defaultCurrency && exchanger.network === defaultCurrency) {
+                dropdownItem.classList.add('active-border');
+                document.querySelector('.sear').innerHTML = defaultCurrency;
+                document.querySelector('#amount').value = 0.1;
+                updateSelected(exchanger, side);
+            }
+            dropdown.appendChild(dropdownItem);
+        }
     });
 }
 
+// Привязка обработчиков к полям ввода
+const leftSearchInput = document.getElementById('leftSearch');
+const rightSearchInput = document.getElementById('rightSearch');
 
+if (leftSearchInput) {
+    leftSearchInput.addEventListener('input', (event) => handleSearchInput(event, 'left'));
+}
+
+if (rightSearchInput) {
+    rightSearchInput.addEventListener('input', (event) => handleSearchInput(event, 'right'));
+}
+
+// Привязка обработчиков скролла
+document.querySelector('.token__block.exchange')?.addEventListener('scroll', (event) =>
+    handleDropdownScroll(event, 'left', document.querySelector('#leftSearch').value ?? defaultExchangeRateParams.fromCurrency)
+);
+
+document.querySelector('.token__block.receipt')?.addEventListener('scroll', (event) =>
+    handleDropdownScroll(event, 'right', document.querySelector('#rightSearch').value ?? defaultExchangeRateParams.toCurrency)
+);
+
+// Загрузка данных для обеих сторон
 async function loadExchangeCurrencyData(defaultCurrencyLeft, defaultCurrencyRight) {
-    if (isLoading) return;
-    isLoading = true;
-
-    // Параметры для запросов
-    const paramsLeft = {
-        page: page,
-        pageSize: 20,
-        search: defaultCurrencyLeft
-    };
-
-    const paramsRight = {
-        page: page,
-        pageSize: 20,
-        search: defaultCurrencyRight
-    };
+    if (isLoadingLeft || isLoadingRight) return;
 
     try {
-        // Запускаем оба запроса параллельно
+        isLoadingLeft = true;
+        isLoadingRight = true;
+
         const [dataLeft, dataRight] = await Promise.all([
-            fetchData('instrumentAll', paramsLeft),
-            fetchData('instrumentAll', paramsRight)
+            fetchData('instrumentAll', { page: pageLeft, pageSize: 20, search: defaultCurrencyLeft }),
+            fetchData('instrumentAll', { page: pageRight, pageSize: 20, search: defaultCurrencyRight }),
         ]);
 
-        // Обработка данных для левого дропдауна
         if (dataLeft && dataLeft.content) {
-            leftDropDownData = [...leftDropDownData, ...dataLeft.content];
-            page++; // увеличиваем страницу, если нужно
-
-            // Обновляем левый дропдаун
-            updateDropdown(leftDropDownData, 'left', defaultCurrencyLeft);
+            updateDropdown(dataLeft.content, 'left', defaultCurrencyLeft);
+            pageLeft++;
         }
 
-        // Обработка данных для правого дропдауна
         if (dataRight && dataRight.content) {
-            rightDropDownData = [...rightDropDownData, ...dataRight.content];
-            page++; // увеличиваем страницу, если нужно
-
-            // Обновляем правый дропдаун
-            updateDropdown(rightDropDownData, 'right', defaultCurrencyRight);
+            updateDropdown(dataRight.content, 'right', defaultCurrencyRight);
+            pageRight++;
         }
     } catch (error) {
-        console.error('Error fetching data for exchange currencies:', error);
+        console.error('Ошибка загрузки данных:', error);
     } finally {
-        isLoading = false;
+        isLoadingLeft = false;
+        isLoadingRight = false;
     }
 }
+
+// Обработчик прокрутки для загрузки данных
+function handleDropdownScroll(event, side, defaultCurrency) {
+    const dropdown = event.target;
+    // Проверяем, если мы достигли конца списка (почти)
+    if (dropdown.scrollTop + dropdown.clientHeight >= dropdown.scrollHeight - 50) {
+        loadDropdownData(side, defaultCurrency);
+    }
+}
+
+loadExchangeCurrencyData(defaultExchangeRateParams.fromCurrency, defaultExchangeRateParams.toCurrency);
+
+
+
+
+
+
+
+
 
 
 
@@ -201,8 +335,7 @@ async function displayExchangers() {
     }
 }
 
-// Инициализация загрузки данных при первом запуске
-loadExchangeCurrencyData('BTC','XMR'); // Для левого дропдауна по умолчанию загрузим BTC
+
 
 
 // Вызываем функцию для отображения обменников
@@ -276,7 +409,6 @@ function setActiveTab(tabType) {
 
 function sortAndUpdateDisplay(data, sortType) {
     const sortedData = sortData(data, sortType);
-    console.log(sortType,sortedData)
     const { fromCurrency, fromNetwork, toCurrency, toNetwork, amount } = getSelectedCurrenciesAndAmount();
     updateExchangersDisplay(sortedData,fromCurrency,toCurrency,amount);
 }
@@ -293,7 +425,6 @@ function sortData(data, sortType) {
             const aExchanger = exchangers.find(exchanger => exchanger.id === a.exchangerId);
             const bExchanger = exchangers.find(exchanger => exchanger.id === b.exchangerId);
 
-            console.log(exchangers)
             // Если данные обменников найдены
             if (aExchanger && bExchanger) {
                 const aTitle = (aExchanger.title || '').toLowerCase();
@@ -328,7 +459,6 @@ function updateExchangersDisplay(data, fromCurrency, toCurrency, amount) {
     const fragment = document.createDocumentFragment();
     const exchangersBody = exchangersContainer.querySelector('.exchangers__body');
     const exchangersBodies = exchangersContainer.querySelectorAll('.exchangers__body');
-    console.log(exchangersBody,exchangersBodies)
     if(exchangersBody){
         exchangersBody.innerHTML = '';
     }
@@ -363,7 +493,7 @@ function createExchangerElement(exchanger, item, fromCurrency, toCurrency, amoun
             ${bestTag}
         </div>
         <div class="exchangers__date-info">
-            <div class="exchangers__date-col">${amount} ${fromCurrency} = ${parseFloat(item.rate).toFixed(8).replace(/(\.0+|(\.[0-9]*[1-9])0+)$/, "$1")} ${toCurrency}</div>
+            <div class="exchangers__date-col">1 ${fromCurrency} = ${parseFloat(item.rate/amount).toFixed(8).replace(/(\.0+|(\.[0-9]*[1-9])0+)$/, "$1")} ${toCurrency}</div>
             <div class="exchangers__date-col">
                 <div class="exchangers__date-txt" data-translate="main.you_receive">You receive</div>
                 <div class="exchangers__date-ttl">${parseFloat(item.rate).toFixed(8).replace(/(\.0+|(\.[0-9]*[1-9])0+)$/, "$1")} ${toCurrency}</div>
@@ -379,7 +509,7 @@ function createExchangerElement(exchanger, item, fromCurrency, toCurrency, amoun
 }
 
 
-getExchangeRate('BTC','BTC','XMR','XMR','0.1','rate')
+getExchangeRate(defaultExchangeRateParams.fromCurrency,defaultExchangeRateParams.fromNetwork,defaultExchangeRateParams.toCurrency,defaultExchangeRateParams.toNetwork,defaultExchangeRateParams.amount,defaultExchangeRateParams.rateType)
 
 // Функция для показа лоадера в указанном контейнере
 function showLoader(container) {
@@ -415,6 +545,50 @@ function showLoader(container) {
     `;
     document.head.appendChild(style);
 }
+
+
+// Обработчик отправки формы по клику на кнопку
+document.querySelector('.contacts__form').addEventListener('submit', async function (e) {
+    e.preventDefault(); // Предотвращаем стандартное поведение формы (перезагрузку страницы)
+    console.log("Form submitted");
+
+    // Сбор данных с формы
+    const formData = new FormData(this);
+
+    // Получаем выбранную тему
+    const selectedTopicElement = document.querySelector('#selectedTopic');
+    const selectedTopic = selectedTopicElement ? selectedTopicElement.textContent : '';
+
+    // Добавляем тему в данные формы
+    formData.append('topic', selectedTopic);
+
+    // Подготовка данных для отправки на сервер
+    const dataToSend = {};
+    formData.forEach((value, key) => {
+        dataToSend[key] = value;
+    });
+
+    console.log('Data to send:', dataToSend);
+
+    // Используем fetchData для отправки данных
+    try {
+        const data = await fetchData('contact', {
+            method: 'POST',
+            body: JSON.stringify(dataToSend),
+        });
+
+        console.log('Ответ от сервера:', data);
+
+        // Обработка успешного ответа от сервера
+        alert('Message sent successfully!');
+    } catch (error) {
+        console.error('Ошибка при отправке данных:', error);
+        alert('An error occurred while sending the message.');
+    }
+});
+
+
+
 
 // Функция для скрытия лоадера
 function hideLoader(container) {
