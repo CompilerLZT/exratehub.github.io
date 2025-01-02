@@ -1,0 +1,51 @@
+{
+  "header": {
+    "logoAlt": "Logo",
+    "menu": {
+      "main": "Main",
+      "contactUs": "Contact Us"
+    },
+    "lang": {
+      "currentLang": "EN",
+      "otherLangs": ["RU", "UK"]
+    }
+  },
+  "main": {
+    "title": "Main",
+    "best_crypto_service": "The best crypto exchange analysis service",
+    "hero_text": "We select the best cryptocurrency exchange rates for you without any additional costs and redirect your requests to the most reliable and proven services. We do not participate in your transactions and do not have access to your funds",
+    "setting_title": "Setting",
+    "exchange_currency": "Exchange currency",
+    "receipt_currency": "Receipt currency",
+    "search_token": "Search Token",
+    "token_placeholder": "Toncoin",
+    "search_amount_placeholder": "Amount...",
+    "search_button": "Search",
+    "exchangers_title": "Exchangers",
+    "sort_by_rate": "Sort by rate",
+    "sort_by_popularity": "Sort by popularity",
+    "best_exchanger": "BEST",
+    "you_receive": "You receive",
+    "our_partners": "Our Partners",
+    "become_partner": "Become a partner",
+    "partners_join_text": "Join us! Become a partner of our platform to grow together in the world of blockchain and digital assets!",
+    "best": "Best"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "contactUs": "Contact US",
+    "chooseTopic": "Select a topic",
+    "email": "Your Email",
+    "message": "Message",
+    "send": "Send"
+  },
+  "footer": {
+    "copyright": "Copyright © 2024",
+    "socialMedia": {
+      "soc1": "Social Button 1",
+      "soc2": "Social Button 2",
+      "soc3": "Social Button 3",
+      "soc4": "Social Button 4"
+    }
+  }
+}
